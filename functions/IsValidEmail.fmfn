@@ -1,0 +1,78 @@
+/**
+ * ==================================================================
+ * IsValidEmail ( email )
+ *
+ * PARAMETERS:
+ *            @email (text) Email
+ * RETURNS:
+ *            (bool) Email has a valid format.
+ * DEPENDENCIES:
+ *            none
+ * PURPOSE:
+ *            Determines if an email has a valid format.
+ * NOTES:
+ *            This function will not validate:
+ *            1) Quoted strings: "local"@domain.com
+ *            2) Comments: local@domain.com(comment)
+ *            3) IP Addresses: local@[127.0.0.1]
+ *            4) International characters above U+007F
+ *            5) Whether an email exists.
+ * REVISIONS:
+ *            2018-04-22 - Initial implementation
+ * ==================================================================
+ */
+Let ( [
+	~at = Position ( email; "@"; 1; 1);
+	~local = Left ( email ; ~at - 1 );
+	~domain = Middle ( email ; ~at + 1; 1000 )
+];
+
+Case (
+
+	// Check Correct Number of at symbols
+	PatternCount ( email ; "@" ) ≠ 1;
+		False;
+
+	// Check length of ~local
+	Length(~local) > 64;
+		False;
+
+	// Check length of ~domain
+	Length(~domain) > 255;
+		False;
+
+	// Check valid characters in ~local
+	Filter(
+		~local ;
+		"abcdefghijklmnopqrstuvwxyz"
+		& "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+		& "1234567890"
+		& ".#!$%&'*+-/=?^_`{}|~"
+	) ≠ ~local;
+		False;
+
+	// Check first or last dot in ~local
+	Left( ~local; 1) = "." or Right( ~local; 1) = ".";
+		False;
+
+	// Check for double-dot
+	PatternCount( email; "..") > 0;
+		False;
+
+	// Check valid characters in ~domain
+	Filter (
+		~domain;
+		"abcdefghijklmnopqrstuvwxyz"
+		& "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+		& "1234567890"
+		& "-."
+	) ≠ ~domain;
+		False;
+
+	// Check first or last hyphen in ~domain
+	Left( ~domain; 1) = "-" or Right(~domain; 1) = "-";
+		False;
+
+	True
+)
+)
