@@ -1,0 +1,23 @@
+/**
+ * ==================================================================
+ * ValueExists ( list ; value )
+ *
+ * PARAMETERS:
+ *            @list  (list) Value list
+ *            @value (text) Search value
+ * RETURNS:
+ *            (bool) Value exists in list
+ * DEPENDENCIES:
+ *            none
+ * PURPOSE:
+ *            Determines if a value exists in a list.
+ * NOTES:
+ *            none
+ * REVISIONS:
+ *            2018-05-14 - Initial implementation
+ * ==================================================================
+ */
+
+GetValue ( list ; 1 ) = value
+or GetValue ( list ; ValueCount ( list ) ) = value
+or PatternCount ( list ; "¶" & value & "¶" ) > 0
