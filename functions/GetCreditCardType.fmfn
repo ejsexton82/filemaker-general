@@ -1,0 +1,84 @@
+/**
+ * ==================================================================
+ * GetCreditCardType ( number )
+ *
+ * PARAMETERS:
+ *        @number (number) Credit card number
+ * RETURNS:
+ *        (string) Name of credit card issuing network.
+ * DEPENDENCIES:
+ *        none
+ * PURPOSE:
+ *        Determines the name of the credit card issuing network based
+ *        on the credit card number.
+ * NOTES:
+ *        This function only performs simple pattern matching on the card
+ *        and does not validate the card number using Lunh validation.
+ *
+ *        Only Major Cards are currently supported (American Express,
+ *        Diners Club, MasterCard, Maestro, Visa).
+ * REVISIONS:
+ *        2018-05-31 - Initial implementation
+ * ==================================================================
+ */
+
+Let ( [
+    ~number = number ;
+    ~length = Length ( ~number ) ;
+    ~left1  = Left ( ~number ; 1 ) ;
+    ~left2  = Left ( ~number ; 2 ) ;
+    ~left3  = Left ( ~number ; 3 ) ;
+    ~left4  = Left ( ~number ; 4 ) ;
+    ~left5  = Left ( ~number ; 5 ) ;
+    ~left6  = Left ( ~number ; 6 )
+] ;
+Case (
+    ~length = 15 and ( ~left2 = 34 or ~left2 = 37 ) ;
+        "American Express" ;
+
+    /* ~length = 16 and ( ( ~left4 = 5610 ) or ( ~left6 ≥ 560221 and ~left6 ≤ 560225 ) ) ; */
+    /*     "Bankcard" ; */
+
+    /* (~length ≥ 16 and ~length ≤ 19 ) and ~left2 = 62 ; */
+    /*     "China UnionPay" ; */
+
+    ~length = 15 and ( ~left4 = 2014 or ~left4 = 2149 ) ;
+        "Diners Club enRoute" ;
+
+    ((~length ≥ 14 and ~length ≤ 19 ) and ~left2 = 36 )
+    or ((~length ≥ 16 and ~length ≤ 19 ) and (
+        ( ~left2 ≥ 38 and ~left2 ≤ 39 )
+        or ( ~left3 ≥ 300 and ~left3 ≤ 305 )
+        or ( ~left4 = 3095 )
+    )) ;
+        "Diners Club International" ;
+
+    ~length = 16 and ( ~left2 ≥ 54 and ~left2 ≤ 55 ) ;
+        "Diners Club" ;
+
+	(~length ≥ 12 and ~length ≤ 19) and (
+		~left2 = 50
+		or (~left2 ≥ 56 and ~left2 ≤ 58)
+		or ~left1 = 6
+	) ;
+		"Maestro" ;
+
+    (~length ≥ 16 and ~length ≤ 19 ) and (
+        ( ~left2 ≥ 64 and ~left2 ≤ 65 )
+        or ~left4 = 6011
+    ) ;
+        "Discover Card" ;
+
+    (~length = 16) and (
+        (~left4 ≥ 2221 and ~left4 ≤ 2720)
+		or (~left2 ≥ 51 and ~left2 ≤ 55)
+	) ;
+		"MasterCard" ;
+
+	(~length = 13 or ~length = 16 or ~length = 19) and ~left1 = 4 ;
+		"Visa" ;
+
+    False
+
+)
+)
