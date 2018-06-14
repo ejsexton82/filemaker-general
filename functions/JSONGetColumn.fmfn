@@ -1,0 +1,33 @@
+/**
+ * ==================================================================
+ * JSONGetColumn ( json ; column )
+ *
+ * PARAMETERS:
+ *            @json (text) JSON Array
+ *            @column (text) Column name
+ * RETURNS:
+ *            (list) Column values
+ * DEPENDENCIES:
+ *            none
+ * PURPOSE:
+ *            Extract column values from a JSON array containing
+ *            rows of data.
+ * NOTES:
+ *            none
+ * REVISIONS:
+ *            2018-06-14 - Initial implementation
+ * ==================================================================
+ */
+
+Let ( [
+    ~rows = JSONListValues ( json ; "" ) ;
+    ~row = GetValue ( ~rows ; 1 ) ;
+    ~value = JSONGetElement ( ~row ; column )
+] ;
+    If ( ValueCount ( ~rows ) > 1 ;
+        ~value & "¶" &
+		JSONGetColumn ( JSONDeleteElement ( json ; "[0]" ) ; column )
+    ; // Else
+        ~value
+    )
+)
