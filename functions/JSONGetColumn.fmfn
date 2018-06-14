@@ -20,14 +20,14 @@
  */
 
 Let ( [
-    ~rows = JSONListValues ( json ; "" ) ;
-    ~row = GetValue ( ~rows ; 1 ) ;
-    ~value = JSONGetElement ( ~row ; column )
+	~rows = JSONListValues ( json ; "" ) ;
+	~row = GetValue ( ~rows ; 1 ) ;
+	~value = JSONGetElement ( ~row ; column )
 ] ;
-    If ( ValueCount ( ~rows ) > 1 ;
+	If ( ValueCount ( ~rows ) > 1 ;
 		~value & "¶" &
 		JSONGetColumn ( JSONDeleteElement ( json ; "[0]" ) ; column )
-    ; // Else
-        ~value
-    )
+	; // Else
+		~value
+	)
 )
