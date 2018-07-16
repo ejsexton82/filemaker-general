@@ -15,9 +15,8 @@
  *            none
  * REVISIONS:
  *            2018-05-14 - Initial implementation
+ *            2018-07-16 - Rewrote function as a single call
  * ==================================================================
  */
 
-GetValue ( list ; 1 ) = value
-or GetValue ( list ; ValueCount ( list ) ) = value
-or PatternCount ( list ; "¶" & value & "¶" ) > 0
+PatternCount ( "¶" & list & "¶" ; "¶" & value & "¶" ) > 0
