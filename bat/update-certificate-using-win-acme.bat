@@ -1,4 +1,5 @@
-SET host=www.example.com
+REM Set the script parameter to "{0}"
+SET host=%1
 
 REM Remove the existing certificate
 fmsadmin certificate delete
