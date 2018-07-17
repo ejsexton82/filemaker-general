@@ -12,26 +12,26 @@
  * DEPENDENCIES:
  *            none
  * PURPOSE:
- *            Retrieve information about an installed plug-in,
+ *            Retrieves information about an installed plug-in,
  *            and parses the information into variables.
  * NOTES:
- *            This function includes additional parsing that may be useful.
+ *            none
  * REVISIONS:
  *            2018-07-17 - Initial implementation.
  * ==================================================================
  */
 
 Let ( [
-    ~plugin = name ;
-    ~plugins = Get ( InstalledFMPlugins ) ;
-    ~startPos = Position ( ~plugins ; ~plugin ; 1 ; 1 ) ;
-    $pluginExists = ~startPos > 0 ;
-    ~nextLinePos = If ( $pluginExists ; Position ( ~plugins ; "¶" ; ~startPos ; 1 ) ) ;
-    ~endPos = If ( $pluginExists ; If ( ~nextLinePos ; ~nextLinePos ; Length ( ~plugins ) ) ) ;
-    ~line = Middle ( ~plugins ; ~startPos ; 1 + ~endPos - ~startPos ) ;
-    ~values = Substitute ( ~line ; ";" ; "¶" ) ;
-    $pluginVersion = GetValue ( ~values ; 2 ) ;
-    $pluginEnabled = GetValue ( ~values ; 3 ) = "Enabled"
+	~plugin = name ;
+	~plugins = Get ( InstalledFMPlugins ) ;
+	~startPos = Position ( ~plugins ; ~plugin ; 1 ; 1 ) ;
+	$pluginExists = ~startPos > 0 ;
+	~nextLinePos = If ( $pluginExists ; Position ( ~plugins ; "¶" ; ~startPos ; 1 ) ) ;
+	~endPos = If ( $pluginExists ; If ( ~nextLinePos ; ~nextLinePos ; Length ( ~plugins ) ) ) ;
+	~line = Middle ( ~plugins ; ~startPos ; 1 + ~endPos - ~startPos ) ;
+	~values = Substitute ( ~line ; ";" ; "¶" ) ;
+	$pluginVersion = GetValue ( ~values ; 2 ) ;
+	$pluginEnabled = GetValue ( ~values ; 3 ) = "Enabled"
 ] ;
-    ~line
+	~line
 )
