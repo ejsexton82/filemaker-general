@@ -6,10 +6,14 @@
  *            @name (text) Plug-in name
  * RETURNS:
  *            (text) Installed plug-in value
+ *            $pluginExists  (bool) TRUE if the plug-in exists
+ *            $pluginVersion (text) Plug-in version string
+ *            $pluginEnabled (bool) TRUE if the plug-in is enabled
  * DEPENDENCIES:
  *            none
  * PURPOSE:
- *            Retrieve information about an installed plug-in.
+ *            Retrieve information about an installed plug-in,
+ *            and parses the information into variables.
  * NOTES:
  *            This function includes additional parsing that may be useful.
  * REVISIONS:
@@ -21,13 +25,13 @@ Let ( [
     ~plugin = name ;
     ~plugins = Get ( InstalledFMPlugins ) ;
     ~startPos = Position ( ~plugins ; ~plugin ; 1 ; 1 ) ;
-    ~exists = ~startPos > 0 ;
-    ~nextLinePos = If ( ~exists ; Position ( ~plugins ; "¶" ; ~startPos ; 1 ) ) ;
-    ~endPos = If ( ~exists ; If ( ~nextLinePos ; ~nextLinePos ; Length ( ~plugins ) ) ) ;
+    $pluginExists = ~startPos > 0 ;
+    ~nextLinePos = If ( $pluginExists ; Position ( ~plugins ; "¶" ; ~startPos ; 1 ) ) ;
+    ~endPos = If ( $pluginExists ; If ( ~nextLinePos ; ~nextLinePos ; Length ( ~plugins ) ) ) ;
     ~line = Middle ( ~plugins ; ~startPos ; 1 + ~endPos - ~startPos ) ;
     ~values = Substitute ( ~line ; ";" ; "¶" ) ;
-    ~version = GetValue ( ~values ; 2 ) ;
-    ~enabled = GetValue ( ~values ; 3 ) = "Enabled"
+    $pluginVersion = GetValue ( ~values ; 2 ) ;
+    $pluginEnabled = GetValue ( ~values ; 3 ) = "Enabled"
 ] ;
     ~line
 )
