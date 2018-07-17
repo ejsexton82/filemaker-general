@@ -18,16 +18,16 @@
  */
 
 Let ( [
-	~plugin = name ;
-	~plugins = Get ( InstalledFMPlugins ) ;
-	~startPos = Position ( ~plugins ; ~plugin ; 1 ; 1 ) ;
-	~exists = ~startPos > 0 ;
-	~nextLinePos = If ( ~exists ; Position ( ~plugins ; "¶" ; ~startPos ; 1 ) ) ;
-	~endPos = If ( ~exists ; If ( ~nextLinePos ; ~nextLinePos ; Length ( ~plugins ) ) ) ;
-	~line = Middle ( ~plugins ; ~startPos ; ~endPos - ~startPos ) ;
-	~values = Substitute ( ~line ; ";" ; "¶" ) ;
-	~version = GetValue ( ~values ; 2 ) ;
-	~enabled = GetValue ( ~values ; 3 ) = "Enabled"
+    ~plugin = name ;
+    ~plugins = Get ( InstalledFMPlugins ) ;
+    ~startPos = Position ( ~plugins ; ~plugin ; 1 ; 1 ) ;
+    ~exists = ~startPos > 0 ;
+    ~nextLinePos = If ( ~exists ; Position ( ~plugins ; "¶" ; ~startPos ; 1 ) ) ;
+    ~endPos = If ( ~exists ; If ( ~nextLinePos ; ~nextLinePos ; Length ( ~plugins ) ) ) ;
+    ~line = Middle ( ~plugins ; ~startPos ; 1 + ~endPos - ~startPos ) ;
+    ~values = Substitute ( ~line ; ";" ; "¶" ) ;
+    ~version = GetValue ( ~values ; 2 ) ;
+    ~enabled = GetValue ( ~values ; 3 ) = "Enabled"
 ] ;
-	~line
+    ~line
 )
