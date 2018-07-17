@@ -1,0 +1,33 @@
+/**
+ * ==================================================================
+ * GetPlugin ( name )
+ *
+ * PARAMETERS:
+ *            @name (text) Plug-in name
+ * RETURNS:
+ *            (text) Installed plug-in value
+ * DEPENDENCIES:
+ *            none
+ * PURPOSE:
+ *            Retrieve information about an installed plug-in.
+ * NOTES:
+ *            This function includes additional parsing that may be useful.
+ * REVISIONS:
+ *            2018-07-17 - Initial implementation.
+ * ==================================================================
+ */
+
+Let ( [
+	~plugin = name ;
+	~plugins = Get ( InstalledFMPlugins ) ;
+	~startPos = Position ( ~plugins ; ~plugin ; 1 ; 1 ) ;
+	~exists = ~startPos > 0 ;
+	~nextLinePos = If ( ~exists ; Position ( ~plugins ; "¶" ; ~startPos ; 1 ) ) ;
+	~endPos = If ( ~exists ; If ( ~nextLinePos ; ~nextLinePos ; Length ( ~plugins ) ) ) ;
+	~line = Middle ( ~plugins ; ~startPos ; ~endPos - ~startPos ) ;
+	~values = Substitute ( ~line ; ";" ; "¶" ) ;
+	~version = GetValue ( ~values ; 2 ) ;
+	~enabled = GetValue ( ~values ; 3 ) = "Enabled"
+] ;
+	~line
+)
