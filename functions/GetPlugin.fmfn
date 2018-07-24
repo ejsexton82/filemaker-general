@@ -18,17 +18,18 @@
  *            none
  * REVISIONS:
  *            2018-07-17 - Initial implementation.
+ *            2018-07-24 - Fixed partial matches and no matches.
  * ==================================================================
  */
 
 Let ( [
 	~plugin = name ;
 	~plugins = Get ( InstalledFMPlugins ) ;
-	~startPos = Position ( ~plugins ; ~plugin ; 1 ; 1 ) ;
+	~startPos = Position ( "¶" & ~plugins ; "¶" & ~plugin & ";" ; 1 ; 1 ) ;
 	$pluginExists = ~startPos > 0 ;
 	~nextLinePos = If ( $pluginExists ; Position ( ~plugins ; "¶" ; ~startPos ; 1 ) ) ;
 	~endPos = If ( $pluginExists ; If ( ~nextLinePos ; ~nextLinePos ; Length ( ~plugins ) ) ) ;
-	~line = Middle ( ~plugins ; ~startPos ; 1 + ~endPos - ~startPos ) ;
+	~line = If ( $pluginExists ; Middle ( ~plugins ; ~startPos ; 1 + ~endPos - ~startPos ) ) ;
 	~values = Substitute ( ~line ; ";" ; "¶" ) ;
 	$pluginVersion = GetValue ( ~values ; 2 ) ;
 	$pluginEnabled = GetValue ( ~values ; 3 ) = "Enabled"
