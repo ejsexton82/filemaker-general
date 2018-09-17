@@ -1,0 +1,49 @@
+/**
+ * ==================================================================
+ * CheckNumberFormat ( number ; decimals )
+ *
+ * PARAMETERS:
+ *            @number (number) Number
+ *            @decimals (number) Number of decimal places
+ * RETURNS:
+ *            (boolean)
+ * DEPENDENCIES:
+ *            none
+ * PURPOSE:
+ *            Verify that a value is, in fact, a number and that the
+ *            number has both a leading integer and the specified
+ *            number of decimal places.
+ * NOTES:
+ *            none
+ * REVISIONS:
+ *            2018-09-17 - Initial implementation
+ * ==================================================================
+ */
+
+Let ( [
+	~number = number ;
+	~places = decimals ;
+	~splits = Substitute ( ~number ; "." ; "¶" ) ;
+	~integer = GetValue ( ~splits ; 1 ) ;
+	~decimal = GetValue ( ~splits ; 2 )
+];
+Case (
+	IsEmpty ( ~number ) ;
+		True ;
+
+	~number ≠ Filter ( ~number ; "1234567890." ) ; // Illegal Characters
+		False ;
+
+	PatternCount ( ~number ; "." ) ≠ 1 ; // Decimal count incorrect
+		False ;
+
+	Length ( ~decimal ) ≠ ~places ; // Decimal places incorrect
+		False ;
+
+	Length ( ~integer ) < 1 ; // Integer missing
+		False ;
+
+	// Else
+		True
+	)
+)
