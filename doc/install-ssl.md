@@ -1,12 +1,15 @@
 Installing SSL Certificate on FileMaker Server
 ==============================================
 
-This article details how to install a Let's Encrypt SSL Certificate on FileMaker Server using the [PKISharp/win-acme](https://github.com/PKISharp/win-acme) Simple ACME Client for Windows.
+This article details how to install a Let's Encrypt SSL Certificate on
+FileMaker Server.
 
 What is Let's Encrypt?
 ----------------------
 
-> Let's Encrypt is a free, automated, and open certificate authority (CA), run for the public's benefit. It is a service provived by the [Internet Security Research Group (ISRG)](https://letsencrypt.org/isrg/).
+> Let's Encrypt is a free, automated, and open certificate authority (CA), run
+> for the public's benefit. It is a service provived by the [Internet Security
+> Research Group (ISRG)](https://letsencrypt.org/isrg/).
 >
 > -- <cite>The Linux Foundation</cite>
 
@@ -30,8 +33,15 @@ net stop "FileMaker Server"
 net start "FileMaker Server"
 ```
 
-Download the PKISharp/win-acme Simple ACME Client
--------------------------------------------------
+Installing on Windows Server
+----------------------------
+
+1. Download the PKISharp/win-acme Simple ACME Client.
+2. Configure the Web Publsihing Engine website.
+3. Set up FileMaker Server update script.
+4. Run win-acme.
+
+### Step 1: Download the PKISharp/win-acme Simple ACME Client
 
 The win-acme Simple ACME Client provides a command-line tool that simplifies and automates the process of installing an SSL Certificate from Let's Encrypt.
 
@@ -41,8 +51,7 @@ The win-acme Simple ACME Client provides a command-line tool that simplifies and
     * These files will be used to renew the certificate automatically.
     * Example: C:\Users\Administrator\Documents\win-acme.vX.X.X.X\
 
-Configure the Web Publishing Engine Web Site
---------------------------------------------
+### Step 2: Configure the Web Publishing Engine Web Site
 
 With a simple configuration, much of the SSL Certificate installation and update process can be automated.
 
@@ -59,8 +68,7 @@ With a simple configuration, much of the SSL Certificate installation and update
 8. Click the "OK" button.
 9. Click the "Close" button.
 
-Set Up FileMaker Server Update Script
--------------------------------------
+### Step 3: Set Up FileMaker Server Update Script
 
 This script will automatically update the FileMaker Server SSL Certificate whenever win-acme runs.
 
@@ -85,8 +93,7 @@ net stop "FileMaker Server"
 net start "FileMaker Server"
 ```
 
-Run win-acme
-------------
+### Step 4: Run win-acme
 
 Now it's time to request the SSL Certificate, validate it, install it, and schedule automatic renewal.
 
@@ -104,3 +111,50 @@ Now it's time to request the SSL Certificate, validate it, install it, and sched
 11. Type "{0}" as a parameter string for the script.
 12. Answer any task configuration questions that may pop up.
 
+Installing on MacOS
+-------------------
+
+1. Install Certbot.
+2. Set up FileMaker Server update script.
+3. Run Certbot manually.
+
+### Step 1: Install Certbot
+
+Certbot can be installed using Homebrew:
+
+```sh
+$ brew install certbot
+```
+
+For more information, see [Certbot: Unspecified Webserver on macOS](https://certbot.eff.org/lets-encrypt/osx-other).
+
+### Step 2: Set Up FileMaker Server Update Script
+
+This script will automatically update the FileMaker Server SSL Certificate whenever certbot runs.
+
+1. Open a text editor.
+2. Copy and paste the code into a new file.
+3. Save the file as "update-fms-ssl.sh".
+
+```sh
+# Remove the existing certificate
+fmsadmin certificate delete
+
+# Install the new certificate
+fmsadmin certificate import --keyfile $CERTBOT_KEY_PATH --intermediateCA /etc/letsencrypt/$CERTBOT_DOMAIN/chain.pem $CERTBOT_CERT_PATH
+
+# Restart FileMaker Server
+launchctl stop com.filemaker.fms
+launchctl start com.filemaker.fms
+
+```
+
+### Step 3: Run Certbot Manually
+
+FileMaker Server on MacOS runs its own copy of Apache Web Server separate from
+the default installation on the server. For this reason, Certbot must be run
+manually:
+```sh
+$ sudo certbot certonly --webroot -w /Library/FileMaker\ Server/HTTPServer/htdocs -d www.example.com
+```
+### Step 4:
