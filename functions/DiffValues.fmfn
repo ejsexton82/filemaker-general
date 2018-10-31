@@ -1,0 +1,34 @@
+/**
+ * ==================================================================
+ * DiffValues ( textToDiff ; diffValueList )
+ *
+ * PARAMETERS:
+ *            @textToDiff    (list) Value list
+ *            @diffValueList (list) Diff values
+ * RETURNS:
+ *            (list) Difference between textToDiff and diffValueList
+ * DEPENDENCIES:
+ *            none
+ * PURPOSE:
+ *            Calculates the difference between textToDiff and
+ *            diffValueList by essentially removing diffValueList
+ *            from textToDiff.
+ * NOTES:
+ *            none
+ * REVISIONS:
+ *            2018-10-31 - Initial implementation
+ * ==================================================================
+ */
+
+Let ( [
+	~textToDiff = textToDiff ;
+	~diffValues = diffValueList ;
+	~firstDiff = Substitute ( "¶" & ~textToDiff & "¶" ; "¶" & GetValue ( ~diffValues ; 1 ) & "¶" ; "¶" ) ;
+	~firstDiff = Middle ( ~firstDiff ; 2 ; Length ( ~firstDiff ) - 2 )
+] ;
+	If ( ValueCount ( ~diffValues ) > 1 ;
+		DiffValues ( ~firstDiff ; RightValues ( ~diffValues ; ValueCount ( ~diffValues )  - 1 ) )
+	; // Else
+		~firstDiff
+	)
+)
