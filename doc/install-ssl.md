@@ -4,6 +4,11 @@ Installing SSL Certificate on FileMaker Server
 This article details how to install a Let's Encrypt SSL Certificate on
 FileMaker Server.
 
+1. [What is Let's Encrypt?](#what-is-lets-encrypt)
+2. [Enable SSL in FileMaker Admin Console](#enable-ssl-in-filemaker-admin-console)
+3. [Installing on Windows](#installing-on-windows-server)
+4. [Installing on MacOS](#installing-on-macos)
+
 What is Let's Encrypt?
 ----------------------
 
