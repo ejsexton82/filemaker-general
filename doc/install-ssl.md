@@ -49,7 +49,7 @@ The win-acme Simple ACME Client provides a command-line tool that simplifies and
 2. Download the latest "win-acme.vX.X.X.X.zip" file.
 3. Extract the folder in a accessible location where it won't be deleted.
     * These files will be used to renew the certificate automatically.
-    * Example: C:\Users\Administrator\Documents\win-acme.vX.X.X.X\
+    * Example: C:\win-acme.vX.X.X.X\
 
 ### Step 2: Configure the Web Publishing Engine Web Site
 
@@ -72,26 +72,8 @@ With a simple configuration, much of the SSL Certificate installation and update
 
 This script will automatically update the FileMaker Server SSL Certificate whenever win-acme runs.
 
-1. Open a text editor.
-2. Copy and paste the code into a new file.
-3. Save the file as "update-fms-ssl.bat" in the win-acme folder.
-    * Example: C:\Users\Administrator\Documents\win-acme.vX.X.X.X\update-fms-ssl.bat
-
-```bat
-@ECHO off
-
-SET host=%1
-
-REM Remove the existing certificate
-fmsadmin certificate delete
-
-REM Install the new certificate
-fmsadmin certificate import --keyfile C:\ProgramData\win-acme\httpsacme-v01.api.letsencrypt.org\%host%-key.pem --intermediateCA C:\ProgramData\win-acme\httpsacme-v01.api.letsencrypt.org\ca-%host%-crt.pem C:\ProgramData\win-acme\httpsacme-v01.api.letsencrypt.org\%host%-crt.pem
-
-REM Restart FileMaker Server
-net stop "FileMaker Server"
-net start "FileMaker Server"
-```
+1. Download [update-certificate-using-win-acme.bat](https://raw.githubusercontent.com/ejsexton82/filemaker-general/master/bat/update-certificate-using-win-acme.bat).
+2. Save the file as "C:\win-acme.vX.X.X.X\scripts\update-certificate-using-win-acme.bat".
 
 ### Step 4: Run win-acme
 
@@ -107,7 +89,7 @@ Now it's time to request the SSL Certificate, validate it, install it, and sched
 8. Type "1: Run a custom script".
 9. Type "n" to not user a different site for installation.
 10. Type the entire path of the "update-fms-ssl.bat" script.
-    * Example: C:\Users\Administrator\Documents\win-acme.vX.X.X.X\update-fms-ssl.bat
+    * Example: C:\win-acme.vX.X.X.X\scripts\update-certificate-using-win-acme.bat
 11. Type "{0}" as a parameter string for the script.
 12. Answer any task configuration questions that may pop up.
 
@@ -117,6 +99,7 @@ Installing on MacOS
 1. Install Certbot.
 2. Set up FileMaker Server update script.
 3. Run Certbot manually.
+4. Setup automatic renewal.
 
 ### Step 1: Install Certbot
 
@@ -132,21 +115,15 @@ For more information, see [Certbot: Unspecified Webserver on macOS](https://cert
 
 This script will automatically update the FileMaker Server SSL Certificate whenever certbot runs.
 
-1. Open a text editor.
-2. Copy and paste the code into a new file.
-3. Save the file as "update-fms-ssl.sh".
-
+1. Download [update-certificate-using-certbot.sh](https://raw.githubusercontent.com/ejsexton82/filemaker-general/master/sh/update-certificate-using-certbot.sh).
+2. Configure the DOMAIN variable in the file:
 ```sh
-# Remove the existing certificate
-fmsadmin certificate delete
-
-# Install the new certificate
-fmsadmin certificate import --keyfile $CERTBOT_KEY_PATH --intermediateCA /etc/letsencrypt/$CERTBOT_DOMAIN/chain.pem $CERTBOT_CERT_PATH
-
-# Restart FileMaker Server
-launchctl stop com.filemaker.fms
-launchctl start com.filemaker.fms
-
+DOMAIN="www.example.com"
+```
+3. Save the file as "/etc/letsencrypt/renewal-hooks/post/update-certificate-using-certbot.sh".
+4. Update the permissions for the file:
+```sh
+$ sudo chmod 755 /etc/letsencrypt/renewal-hooks/post/update-fms-ssl.sh
 ```
 
 ### Step 3: Run Certbot Manually
@@ -157,4 +134,6 @@ manually:
 ```sh
 $ sudo certbot certonly --webroot -w /Library/FileMaker\ Server/HTTPServer/htdocs -d www.example.com
 ```
-### Step 4:
+### Step 4: Setup Automatic Renewal
+
+Work in progress.
