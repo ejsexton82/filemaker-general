@@ -1,0 +1,45 @@
+/**
+ * ==================================================================
+ * ValueNumber ( listOfValues ; searchValue ; startingValue ; occurrence )
+ *
+ * PARAMETERS:
+ *            @listOfValues  (list)   Value list
+ *            @searchValue   (text)   Search value
+ *            @startingValue (number) Value to start searching from
+ *            @occurrence    (number) Number of search value occurrence
+ * RETURNS:
+ *            (number) Value number of search value
+ * DEPENDENCIES:
+ *            none
+ * PURPOSE:
+ *            Retrieve the value number of the search value within a 
+ *            list of values.
+ * NOTES:
+ *            none
+ * REVISIONS:
+ *            2018-11-14 - Initial implementation
+ * ==================================================================
+ */
+
+Let ( [
+	~listOfValues = listOfValues ;
+	~searchValue = searchValue ;
+	~startingValue = startingValue ;
+	~occurrence = occurrence ;
+	~truncatedList = RightValues ( ~listOfValues ; ValueCount ( ~listOfValues ) - ~startingValue + 1 ) ;
+	~remainingList = LeftValues ( ~listOfValues ; ~startingValue - 1 ) ;
+	~searchList = "¶" & Substitute ( ~truncatedList ; "¶"; "¶¶" ) & "¶" ;
+	~valuePosition = Position ( 
+		~searchList; 
+		"¶" & ~searchValue & "¶" ; 
+		1; ~occurrence
+		) ;
+	~leftList = Substitute ( Left ( ~searchList ; ~valuePosition ); "¶¶"; "¶") ;
+	~resultList = ~remainingList & Middle ( ~leftList ; 2 ; Length ( ~leftList ) - 2 )
+] ;
+If ( ~valuePosition ≤ 0 ;
+	False
+; // Else
+	ValueCount ( ~resultList ) + 1
+)
+)
