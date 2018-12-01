@@ -1,22 +1,23 @@
 /**
  * ==================================================================
- * ValueExists ( list ; value )
+ * ValueExists ( listOfValues ; searchValue )
  *
  * PARAMETERS:
- *            @list  (list) Value list
- *            @value (text) Search value
+ *			  @listOfValues (list) Value list
+ *			  @searchValue  (text) Search value
  * RETURNS:
- *            (bool) Value exists in list
+ *			  (bool) Value exists in list
  * DEPENDENCIES:
- *            none
+ *			  none
  * PURPOSE:
- *            Determines if a value exists in a list.
+ *			  Determines if a value exists in a list.
  * NOTES:
- *            none
+ *			  none
  * REVISIONS:
- *            2018-05-14 - Initial implementation
- *            2018-07-16 - Rewrote function as a single call
+ *			  2018-05-14 - Initial implementation
+ *			  2018-07-16 - Rewrote function as a single call
+ *			  2018-12-01 - Rewrote function to use FilterValues instead
  * ==================================================================
  */
 
-PatternCount ( "¶" & list & "¶" ; "¶" & value & "¶" ) > 0
+not IsEmpty ( FilterValues ( listOfValues ; searchValue ) )
