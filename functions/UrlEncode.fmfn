@@ -11,7 +11,8 @@
  * PURPOSE:
  *			  Encodes characters that are not URL-safe
  * NOTES:
- *			  Max length limited to 49999 characters due to recursion.
+ *			  FileMaker Pro 16.0 or later.
+ *			  Limited to 49999 characters due to recursion.
  * REVISIONS:
  *			  2019-01-04 - EJS - Initial implementation
  * ==================================================================
