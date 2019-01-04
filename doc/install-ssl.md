@@ -41,12 +41,29 @@ net start "FileMaker Server"
 Installing on Windows Server
 ----------------------------
 
-1. Download the PKISharp/win-acme Simple ACME Client.
-2. Configure the Web Publsihing Engine website.
-3. Set up FileMaker Server update script.
-4. Run win-acme.
+1. Configure FileMaker Admin Console.
+2. Download the PKISharp/win-acme Simple ACME Client.
+3. Configure the Web Publsihing Engine website.
+4. Set up FileMaker Server update script.
+5. Run win-acme.
 
-### Step 1: Download the PKISharp/win-acme Simple ACME Client
+### Step 1: Configure FileMaker Admin Console
+
+There are a few adjustments that need to be made to the FileMaker Admin Console
+in order to automate the SSL Certificate update.
+
+1. Follow the instructions above to "Enable SSL in FileMaker Admin Console".
+2. Enable External Authentication for Administrators Group.
+
+#### Enabling External Authentiation for Administrators Group
+
+By enabling External Authentication for the Administrators group, we will be
+able to run a script that updates the FileMaker Server SSL without having to
+enter or store the FileMaker Admin Console password.
+
+1. 
+
+### Step 2: Download the PKISharp/win-acme Simple ACME Client
 
 The win-acme Simple ACME Client provides a command-line tool that simplifies and automates the process of installing an SSL Certificate from Let's Encrypt.
 
@@ -56,7 +73,7 @@ The win-acme Simple ACME Client provides a command-line tool that simplifies and
     * These files will be used to renew the certificate automatically.
     * Example: C:\win-acme.vX.X.X.X\
 
-### Step 2: Configure the Web Publishing Engine Web Site
+### Step 3: Configure the Web Publishing Engine Web Site
 
 With a simple configuration, much of the SSL Certificate installation and update process can be automated.
 
@@ -73,14 +90,14 @@ With a simple configuration, much of the SSL Certificate installation and update
 8. Click the "OK" button.
 9. Click the "Close" button.
 
-### Step 3: Set Up FileMaker Server Update Script
+### Step 4: Set Up FileMaker Server Update Script
 
 This script will automatically update the FileMaker Server SSL Certificate whenever win-acme runs.
 
 1. Download [update-certificate-using-win-acme.bat](https://raw.githubusercontent.com/ejsexton82/filemaker-general/master/bat/update-certificate-using-win-acme.bat).
 2. Save the file as "C:\win-acme.vX.X.X.X\scripts\update-certificate-using-win-acme.bat".
 
-### Step 4: Run win-acme
+### Step 5: Run win-acme
 
 Now it's time to request the SSL Certificate, validate it, install it, and schedule automatic renewal.
 
