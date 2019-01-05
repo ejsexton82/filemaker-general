@@ -3,18 +3,19 @@
  * UrlEncode ( textToEncode )
  *
  * PARAMETERS:
- *			  @textToEncode (text) Encode text
+ *            @textToEncode (text) Encode text
  * RETURNS:
- *			  (text) Encoded text
+ *            (text) Encoded text
  * DEPENDENCIES:
- *			  none
+ *            none
  * PURPOSE:
- *			  Encodes characters that are not URL-safe
+ *            Encodes characters that are not URL-safe
  * NOTES:
- *			  FileMaker Pro 16.0 or later.
- *			  Limited to 49999 characters due to recursion.
+ *            REDUNDANT: Use GetAsURLEncoded()
+ *            FileMaker Pro 16.0 or later.
+ *            Limited to 49999 characters due to recursion.
  * REVISIONS:
- *			  2019-01-04 - EJS - Initial implementation
+ *            2019-01-04 - EJS - Initial implementation
  * ==================================================================
  */
 
@@ -25,16 +26,16 @@ Let ( [
 	~firstRaw = If ( ~isFirstSafe ; ~first ; HexEncode ( ~first ) ) ;
 	~firstEncoded = Case (
 		Length ( ~firstRaw ) = 6 ;
-			"%" & Left ( ~firstRaw ; 2 ) & "%" & Middle ( ~firstRaw ; 2 ; 2 ) & "%" & Right ( ~firstRaw ; 2 ) ;
+		"%" & Left ( ~firstRaw ; 2 ) & "%" & Middle ( ~firstRaw ; 2 ; 2 ) & "%" & Right ( ~firstRaw ; 2 ) ;
 
 		Length ( ~firstRaw ) = 4 ;
-			"%" & Left ( ~firstRaw ; 2 ) & "%" & Right ( ~firstRaw ; 2 ) ;
+		"%" & Left ( ~firstRaw ; 2 ) & "%" & Right ( ~firstRaw ; 2 ) ;
 
 		Length ( ~firstRaw ) = 2 ;
-			"%" & ~firstRaw ;
+		"%" & ~firstRaw ;
 
 		~firstRaw
-	)
+		)
 ] ;
 
 If ( Length ( textToEncode ) ≤ 1 ;
