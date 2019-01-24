@@ -1,0 +1,40 @@
+/**
+ * ==================================================================
+ * SetLayoutVariable ( name ; value )
+ *
+ * PARAMETERS:
+ *			  @name  (text) Variable name
+ *			  @value (text) Variable value
+ * RETURNS:
+ *
+ * DEPENDENCIES:
+ *			  none
+ * PURPOSE:
+ *			  Sets a variable specific to the current layout.
+ * NOTES:
+ *
+ * REVISIONS:
+ *			  2019-01-24 - Initial implementation
+ * ==================================================================
+ */
+
+Let([
+	~name = name ;
+	~value = value ;
+	~parameters = "$$LAYOUTS." & Get ( LayoutNumber ) & "." & ~name & "=" & Quote ( ~value ) ;
+	~expression = "Let([¶"
+	& ~parameters
+	& If ( Right ( ~parameters ; 1 ) = ";" or Right ( ~parameters; 1 ) = ¶;
+		"$~ = $~"
+	)  //terminating variable to keep semicolon-delimited sytax in parameters consistent
+	& "¶];¶"
+	& "True¶)"
+];
+
+If ( IsValidExpression ( ~expression );
+	Evaluate ( ~expression )
+; // Else
+	False
+   )
+
+)

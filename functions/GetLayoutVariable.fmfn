@@ -1,0 +1,31 @@
+/**
+ * ==================================================================
+ * GetLayoutVariable ( name )
+ *
+ * PARAMETERS:
+ *			  @name (text) Variable name
+ * RETURNS:
+ *			  (text) Variable value
+ * DEPENDENCIES:
+ *			  none
+ * PURPOSE:
+ *			  Gets the value of a variable specific to the current layout.
+ * NOTES:
+ *
+ * REVISIONS:
+ *			  2019-01-24 - Initial implementation
+ * ==================================================================
+ */
+
+Let([
+	~name = name ;
+	~expression = "$$LAYOUTS." & Get ( LayoutNumber ) & "." & ~name
+];
+
+If ( IsValidExpression ( ~expression );
+	Evaluate ( ~expression )
+; // Else
+	False
+)
+
+)
