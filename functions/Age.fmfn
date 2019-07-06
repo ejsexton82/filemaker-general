@@ -1,0 +1,30 @@
+/**
+ * ==================================================================
+ * Age ( birthdate ; onDate )
+ *
+ * PARAMETERS:
+ *            @birthdate (date) Birthdate
+ *            @onDate    (date) Age on date
+ * RETURNS:
+ *
+ * DEPENDENCIES:
+ *            none
+ * PURPOSE:
+ *            Given a birthdate, determines the age (in years) on the specified date
+ * NOTES:
+ *
+ * REVISIONS:
+ *            2019-06-06 - Initial implementation
+ * ==================================================================
+ */
+
+Let ( [
+	~birthdate = birthdate ;
+	~onDate = onDate
+] ;
+
+Year ( ~onDate )
+- Year ( ~birthdate )
+- ( ~onDate < Date ( Month ( ~birthdate ) ; Day ( ~birthdate ) ; Year ( ~onDate ) ) )
+
+)

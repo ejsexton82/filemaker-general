@@ -1,0 +1,39 @@
+/**
+ * ==================================================================
+ * Extract ( varString )
+ *
+ * PARAMETERS:
+ *            @varString (text) Let variables formatted as a string
+ * RETURNS:
+ *            (boolean) varString is valid
+ * DEPENDENCIES:
+ *            none
+ * PURPOSE:
+ *            Extracts variables from a Let-statement variable string.
+ * NOTES:
+ *            Primarily used with `Get(ScriptParameter)` as a means of
+ *            passing script parameters. However, it can also be used to
+ *            set global variables, as well.
+ * REVISIONS:
+ *            2019-05-09 - Initial implementation
+ * ==================================================================
+ */
+
+Let ( [
+	~varString = varString ;
+	~evaluateString = "Let( [¶"
+	& ~varString
+
+	// terminating variable to keep semicolon-delimited sytax in varString consistent
+	& If ( Right ( ~varString ; 1 ) = ";" or Right ( ~varString; 1 ) = ¶; "$~ = $~")  
+
+	& "¶];¶"
+	& "True¶)"
+];
+
+If ( IsValidExpression ( ~evaluateString );
+	Evaluate ( ~evaluateString )
+; //else, ~evaluateString is not a valid expression...
+	False
+)
+)

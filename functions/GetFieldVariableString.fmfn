@@ -1,0 +1,26 @@
+/**
+ * ==================================================================
+ * GetFieldVariableString ( var ; field )
+ *
+ * PARAMETERS:
+ *            @var (text) Variable name
+ *            @field (text) Field name
+ * RETURNS:
+ *            (string) Variable string
+ * DEPENDENCIES:
+ *            none
+ * PURPOSE:
+ *            Composes a variable string with the specified field name.
+ * NOTES:
+ *            Used for creating callback script variable strings.
+ * REVISIONS:
+ *            2019-05-09 - Initial implementation
+ * ==================================================================
+ */
+
+Let ( [
+	~var = var ;
+	~field = field 
+];
+~var & " = Evaluate ( " & Quote ( "GetField ( " & Quote ( ~field ) & " )" ) & " )" & ";¶"
+)

@@ -1,0 +1,32 @@
+/**
+ * ==================================================================
+ * GetWindowVariable ( name )
+ *
+ * PARAMETERS:
+ *			  @name (text) Variable name
+ * RETURNS:
+ *			  (text) Variable value
+ * DEPENDENCIES:
+ *			  none
+ * PURPOSE:
+ *			  Gets the value of a variable specific to the current window.
+ * NOTES:
+ *
+ * REVISIONS:
+ *			  2019-02-13 - Initial implementation
+ * ==================================================================
+ */
+
+Let([
+	~name = name ;
+	~windowID = HexEncode ( CryptDigest ( Get ( WindowName ) ; "MD5" ) ) ;
+	~expression = "$$WINDOWS." & ~windowID & "." & ~name
+];
+
+If ( IsValidExpression ( ~expression );
+	Evaluate ( ~expression )
+; // Else
+	False
+)
+
+)

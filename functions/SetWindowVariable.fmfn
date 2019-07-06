@@ -1,0 +1,41 @@
+/**
+ * ==================================================================
+ * SetWindowVariable ( name ; value )
+ *
+ * PARAMETERS:
+ *            @name  (text) Variable name
+ *            @value (text) Variable value
+ * RETURNS:
+ *
+ * DEPENDENCIES:
+ *            none
+ * PURPOSE:
+ *            Sets a variable specific to the current window.
+ * NOTES:
+ *
+ * REVISIONS:
+ *            2019-02-13 - Initial implementation
+ * ==================================================================
+ */
+
+Let([
+	~name = name ;
+	~value = value ;
+	~windowID = HexEncode ( CryptDigest ( Get ( WindowName ) ; "MD5" ) ) ;
+	~parameters = "$$WINDOWS." & ~windowID & "." & ~name & "=" & Quote ( ~value ) ;
+	~expression = "Let([¶"
+	& ~parameters
+	& If ( Right ( ~parameters ; 1 ) = ";" or Right ( ~parameters; 1 ) = ¶;
+		"$~ = $~"
+		)  //terminating variable to keep semicolon-delimited sytax in parameters consistent
+	& "¶];¶"
+	& "True¶)"
+];
+
+If ( IsValidExpression ( ~expression );
+	Evaluate ( ~expression )
+; // Else
+	False
+)
+
+)
