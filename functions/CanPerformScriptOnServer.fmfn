@@ -1,0 +1,28 @@
+/**
+ * ==================================================================
+ * CanPeformScriptOnServer ( )
+ *
+ * PARAMETERS:
+ *            none
+ *
+ * RETURNS:
+ *            (boolean) True if PerformScriptOnServer can be called.
+ *
+ * DEPENDENCIES:
+ *            none
+ *
+ * PURPOSE:
+ *            Determines if the PerformScriptOnServer script step can be called.
+ *
+ * NOTES:
+ *            Useful for adding a PSOS bypass to the beginning of scripts.
+ *            Could be stored in $$APP.SCRIPTS.PERFORM_SCRIPT_ON_SERVER.
+ *
+ * REVISIONS:
+ *            2021-07-10 - Initial implementation
+ * ==================================================================
+ */
+
+not IsEmpty ( Get ( HostApplicationVersion ) )
+and not PatternCount ( Get ( ApplicationVersion ) ; "Server" )
+and not PatternCount ( Get ( ApplicationVersion ) ; "Runtime" )
