@@ -1,0 +1,43 @@
+/**
+ * ==================================================================
+ * SplitPayment ( amount ; split )
+ *
+ * PARAMETERS:
+ *            @amount (number) Payment amount
+ *            @split  (number) Number of splits
+ * RETURNS:
+ *            (list) Evenly-split payment amounts
+ * DEPENDENCIES:
+ *            none
+ * PURPOSE:
+ *            Evenly splits a payment amount a specified number of times.
+ * NOTES:
+ *            none
+ * REVISIONS:
+ *            2022-07-06 - Initial implementation
+ * ==================================================================
+ */
+
+Let ( [
+	~amount = amount ;
+	~split = split ;
+	~subdivisions = Mod ( ~amount * 100 / ~split ; 1) * ~split
+] ;
+
+If ( ~subdivisions > 0 ;
+	Substitute (
+		Floor ( ( 10 ^ ~subdivisions ) - 1 ) ;
+		"9" ;
+		( Ceiling ( ~amount * 100 / ~split ) / 100 ) & ¶
+	) // Substitute
+; // Else
+	""
+) // If
+
+& Substitute (
+	Floor ( ( 10 ^ ( ~split - ~subdivisions ) ) - 1 ) ;
+	"9" ;
+	( Floor ( ~amount * 100 / ~split ) / 100 ) & ¶
+) // Substitute
+
+) // Let
