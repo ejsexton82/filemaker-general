@@ -1,0 +1,59 @@
+/**
+ * ==================================================================
+ * FormatNumber ( number ; decimals ; decimalSeparator ; thousandsSeparator )
+ *
+ * PARAMETERS:
+ *            @number             (number) Number to be formatted
+ *            @decimals           (number) Round to number of decimal places
+ *            @decimalSeparator   (text)   Decimal separator
+ *            @thousandsSeparator (text)   Thousands separator
+ * RETURNS:
+ *            (text) Formatted number
+ * DEPENDENCIES:
+ *            none
+ * PURPOSE:
+ *            For formatting numbers that appears in Text fields
+ * NOTES:
+ *            Non-recursive. Number fields have their own formatting options
+ *            that are more efficient than this function and should be used
+ *            when available.
+ * REVISIONS:
+ *            2022-12-07 - Initial implementation
+ * ==================================================================
+ */
+
+Let ( [
+	~number = number ;
+	~decimals = decimals ;
+	~decimalSeparator = decimalSeparator ;
+	~thousandsSeparator = thousandsSeparator ;
+
+	// Function logic
+	~roundedNumber = Round ( ~number ; ~decimals ) ;
+	~wholeNumber = Floor ( ~roundedNumber ) ;
+	~thousandsCount = Ceiling ( Length ( ~wholeNumber ) / 3 ) ;
+	$n = Right ( "  " & ~wholeNumber ; ~thousandsCount * 3 ) ;
+	$c = -1 ;
+	~formattedWholeNumber = Substitute (
+		Trim ( Evaluate (
+			Substitute (
+				10 ^ ~thousandsCount - 1 ;
+				"9" ;
+				"Let($c=$c+1;Middle($n;$c*3+1;3))&\" \"&"
+			) & "\"\""
+		) ),
+		" ",
+		~thousandsSeparator
+	) ;
+	~decimalNumber = Filter ( ~roundedNumber - ~wholeNumber ; "0123456789" ) ;
+	~paddedDecimalNumber = ~decimalNumber & Substitute ( 10 ^ ~decimals - 1 ; 9 ; 0 ) ;
+	~formattedDecimalNumber = If ( ~decimals > 0 ;
+		~decimalSeparator & Left ( ~paddedDecimalNumber ; ~decimals )
+	; // Else
+		""
+	)
+] ;
+
+~formattedWholeNumber & ~formattedDecimalNumber
+
+) // Let

@@ -1,0 +1,52 @@
+/**
+ * ==================================================================
+ * GetFieldValues ( field )
+ *
+ * PARAMETERS:
+ *            @field (field) Field
+ * RETURNS:
+ *            (list) Field values for every record in the found set.
+ * DEPENDENCIES:
+ *            none
+ * PURPOSE:
+ *            Retrieves values for the specified field from every
+ *            record in the current found set.
+ * NOTES:
+ *            This function does not use recursion. In theory, this
+ *            function could support up to 32M records.
+ *            (Limit: Length of evaluate string @ 10^9 characters)
+ *
+ *            Basically, we create a string with a number of 9s equal
+ *            to the number of records in the current found set, then
+ *            replace each 9 with a field value using GetNthRecord.
+ * REVISIONS:
+ *            2022-07-10 - Initial implementation
+ * ==================================================================
+ */
+
+Let ( [
+	~field = field ;
+	~number = Get ( FoundCount ) ;
+	~nines = Left (
+		Substitute (
+			Substitute (
+				10 ^ Ceiling ( ~number ^ ( 1 / 3 ) ) - 1 ;
+				9 ;
+				10 ^ Ceiling ( ~number ^ ( 1 / 3 ) ) - 1
+			) ;
+			9 ;
+			10 ^ Ceiling ( ~number ^ ( 1 / 3 ) ) - 1
+		) ;
+		~number
+	) ;
+	~result = Evaluate (
+		"Let([" &
+		"f=" & GetFieldName ( ~field ) & ";" &
+		"r=\"\";" &
+		"n=0" &
+		Substitute( ~nines ; "9" ; ";n=n+1;r=r&GetNthRecord(f;n)&\¶" ) &
+		"];r)"
+	)
+] ;
+~result
+)

@@ -1,0 +1,35 @@
+/**
+ * ==================================================================
+ * RemoveValue ( list ; value )
+ *
+ * PARAMETERS:
+ *            @list  (list) Value list
+ *            @value (list) Value to remove
+ * RETURNS:
+ *            (list) Value list with value removed
+ * DEPENDENCIES:
+ *            none
+ * PURPOSE:
+ *            Remove a value from a value list
+ * NOTES:
+ *            none
+ * REVISIONS:
+ *            2022-07-14 - Initial implementation
+ * ==================================================================
+ */
+
+// Remove Value ( list ; value )
+Let ( [
+    ~list = list ;
+    ~value = value
+] ;
+
+Substitute (
+	~list ;
+	[ ¶ & ~value & ¶ ; ¶ ] ; // Middle of the list
+	[ ~value & ¶ ; "" ] ; // Beginning of the list
+	[ ¶ & ~value ; "" ] ; // End of the list
+	[ ~value ; "" ] // Whole list
+)
+
+)

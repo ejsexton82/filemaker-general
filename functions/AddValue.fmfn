@@ -1,0 +1,31 @@
+/**
+ * ==================================================================
+ * AddValue ( list ; value )
+ *
+ * PARAMETERS:
+ *            @list  (list) Value list
+ *            @value (list) Value to add
+ * RETURNS:
+ *            (list) Value list with value added
+ * DEPENDENCIES:
+ *            none
+ * PURPOSE:
+ *            Add a value to a value list
+ * NOTES:
+ *            none
+ * REVISIONS:
+ *            2022-07-14 - Initial implementation
+ * ==================================================================
+ */
+
+// AddValue ( list ; value )
+Let ( [
+    ~list = list ;
+    ~value = value
+] ;
+
+~list
+& If ( IsEmpty ( ~list ) ; "" ; ¶ )
+& ~value
+
+)

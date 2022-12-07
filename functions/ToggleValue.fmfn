@@ -1,0 +1,48 @@
+/**
+ * ==================================================================
+ * ToggleValue ( list ; value )
+ *
+ * PARAMETERS:
+ *            @list  (list) Value list
+ *            @value (list) Value to toggle
+ * RETURNS:
+ *            (list) Value list with value added or removed
+ * DEPENDENCIES:
+ *            none
+ * PURPOSE:
+ *            If the value exists in the list,
+ *            Then remove the value from the list,
+ *            Else add the value to the list.
+ * NOTES:
+ *            none
+ * REVISIONS:
+ *            2022-07-14 - Initial implementation
+ * ==================================================================
+ */
+
+// ToggleValue ( list ; value )
+Let ( [
+	~list = list ;
+	~value = value
+] ;
+
+If ( IsEmpty ( FilterValues ( ~list ; ~value ) ) ;
+
+	// Add the value
+	~list
+	& If ( IsEmpty ( ~list ) ; "" ; ¶ )
+	& ~value
+
+; // Else
+
+	Substitute (
+		~list ;
+		[ ¶ & ~value & ¶ ; ¶ ] ; // Middle of the list
+		[ ~value & ¶ ; "" ] ; // Beginning of the list
+		[ ¶ & ~value ; "" ] ; // End of the list
+		[ ~value ; "" ] // Whole list
+	)
+
+)
+
+)
