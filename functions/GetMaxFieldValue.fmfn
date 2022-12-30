@@ -19,7 +19,7 @@
  */
 
 Let ( [
-    ~field = Tm::Record Number ;
+    ~field = field ;
     ~op = ">" ; // Change to "<" for min
     ~number = Get ( FoundCount ) ;
     ~nines = Left (
