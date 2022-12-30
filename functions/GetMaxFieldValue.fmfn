@@ -1,0 +1,47 @@
+/**
+ * ==================================================================
+ * GetMaxFieldValue ( field )
+ *
+ * PARAMETERS:
+ *            @field (field) Field
+ * RETURNS:
+ *            (number) Maximum field value of every record in the found set.
+ * DEPENDENCIES:
+ *            none
+ * PURPOSE:
+ *            Retrieves the maximum value for the specified field from every
+ *            record in the current found set.
+ * NOTES:
+ *            Not recursive. Retrieve minimum value by changing ~op to "<".
+ * REVISIONS:
+ *            2022-12-30 - Initial implementation
+ * ==================================================================
+ */
+
+Let ( [
+    ~field = Tm::Record Number ;
+    ~op = ">" ; // Change to "<" for min
+    ~number = Get ( FoundCount ) ;
+    ~nines = Left (
+        Substitute (
+            Substitute (
+                10 ^ Ceiling ( ~number ^ ( 1 / 3 ) ) - 1 ;
+                9 ;
+                10 ^ Ceiling ( ~number ^ ( 1 / 3 ) ) - 1
+            ) ;
+            9 ;
+            10 ^ Ceiling ( ~number ^ ( 1 / 3 ) ) - 1
+        ) ;
+        ~number
+    ) ;
+    ~result = Evaluate (
+        "Let([" &
+        "f=" & GetFieldName ( ~field ) & ";" &
+        "r=\"\";" &
+        "n=0;r=GetNthRecord(f;1)" &
+        Substitute( ~nines ; "9" ; ";n=n+1;c=GetNthRecord(f;n);r=If(c" & ~op & "r;c;r)&\¶" ) &
+        "];r)"
+    )
+] ;
+~result
+)
