@@ -39,8 +39,9 @@ Let ( [
         "f=" & GetFieldName ( ~field ) & ";" &
         "r=\"\";" &
         "n=0;r=GetNthRecord(f;1)" &
-        Substitute( ~nines ; "9" ; ";n=n+1;c=GetNthRecord(f;n);r=If(c" & ~op & "r;c;r)&\¶" ) &
-        "];r)"
+        Substitute( ~nines ; "9" ;
+            ";n=n+1;c=GetNthRecord(f;n);r=If(c" & ~op & "r;c;r)&\¶"
+        ) & "];r)"
     )
 ] ;
 ~result
