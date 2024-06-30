@@ -1,0 +1,39 @@
+/**
+ * ==================================================================
+ * Exclude ( textToExclude ; excludeText )
+ *
+ * PARAMETERS:
+ *            @textToExclude (text) any text expression or text field
+ *            @excludeText (text) the characters to exclude in the specified text
+ * RETURNS:
+ *            (text) Excluded text
+ * DEPENDENCIES:
+ *            none
+ * PURPOSE:
+ *            Returns from textToExclude only those characters NOT specified in
+ *            excludeText, in the order they were originally entered in 
+ *            textToExclude
+ * NOTES:
+ *            Not recursive.
+ * REVISIONS:
+ *            2024-06-30 - Initial implementation
+ * ==================================================================
+ */
+
+Let ( [
+	~textToExclude = textToExclude ;
+	~excludeText = excludeText ;
+	~nines = 10 ^ Length ( ~excludeText ) - 1 ;
+	~searchReplaceString = "Let([" &
+		"r=" & Quote ("[\"\";\"\"]") & ";" &
+		"e=" & Quote ( ~excludeText ) & ";" &
+		"n=0" &
+		Substitute ( ~nines ; "9" ;
+			";n=n+1;c=Middle(e;n;1);r=r&" & Quote ( ";[\"" ) & "&c&" & Quote ("\";\"\"]")
+		) &
+		"];r)" ;
+	~expression = "Substitute(\"" & ~textToExclude & "\";" & Evaluate ( ~searchReplaceString ) & ")"
+] ;
+Evaluate ( ~expression )
+)
+
