@@ -1,0 +1,43 @@
+/**
+ * ==================================================================
+ * JSONMerge ( json1 ; json2 )
+ *
+ * PARAMETERS:
+ *            @json1 (json) Source JSON object
+ *            @json2 (json) Update JSON object
+ * RETURNS:
+ *            (json) Returns the resulting JSON object.
+ * DEPENDENCIES:
+ *            none
+ * PURPOSE:
+ *            Performs a shallow merge of two JSON object.
+ * NOTES:
+ *            Nonrecursive.
+ * REVISIONS:
+ *            2024-07-18 - Initial implementation
+ * ==================================================================
+ */
+
+// JSONMerge ( json1 ; json2 )
+Let ( [
+	~json1 = json1 ;
+	~json2 = json2 ;
+	~nines = 10 ^ ValueCount ( JSONListKeys ( ~json2 ; "" ) ) - 1 ;
+	~let = "k=" & Quote ( JSONListKeys ( ~json2 ; "" ) ) & ";" &
+		"i=0" & ";" &
+		"z=" & Quote ( ~json1 ) & ";" &
+		"y=" & Quote ( ~json2 ) & 
+		Substitute ( 
+			~nines ; 
+			"9" ;
+			";" &
+			"i=i+1;" &
+			"f=GetValue(k;i);" &
+			"v=JSONGetElement(y;f);" &
+			"t=JSONGetElementType(y;f);" &
+			"z=JSONSetElement(z;f;v;t)"
+		) ;
+	~expression = "Let([" & ~let & "];z)"
+] ;
+	Evaluate ( ~expression )
+)
