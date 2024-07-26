@@ -14,14 +14,16 @@
  * NOTES:
  *            none
  * REVISIONS:
+#             2024-07-26 - Fixed ~subdivisions floating-point error
  *            2022-07-06 - Initial implementation
  * ==================================================================
  */
 
+// Split Payment ( amount ; split )
 Let ( [
 	~amount = amount ;
 	~split = split ;
-	~subdivisions = Mod ( ~amount * 100 / ~split ; 1) * ~split
+	~subdivisions = Floor ( Mod ( ~amount * 100 / ~split ; 1) * ~split )
 ] ;
 
 If ( ~subdivisions > 0 ;
